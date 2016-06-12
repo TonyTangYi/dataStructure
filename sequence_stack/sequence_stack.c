@@ -103,8 +103,6 @@ int get_topElement_sqstack(sequence_stack *sqstack,element_type *pd)
 	return TRUE;
 }
 
-
-
 void print_sqstack(sequence_stack *sqstack)
 {
 	if (sqstack == NULL || sqstack->pdt == NULL)

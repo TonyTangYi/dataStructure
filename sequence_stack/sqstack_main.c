@@ -23,6 +23,8 @@ int main()
 		push_sqstack(&sstack,ret);
 	}
 	print_sqstack(&sstack);
+	get_topElement_sqstack(&sstack,&ret);
+	printf("the top data is %d\n",ret);
 	
 	for(ret = 100;ret < 120;ret++)
 	{
@@ -30,7 +32,17 @@ int main()
 	}
 	
 	print_sqstack(&sstack);
-
+	printf("the stacak deepth ：%d\n",deepth_sqstack(&sstack));
+	get_topElement_sqstack(&sstack,&ret);
+	printf("the top data is %d\n",ret);
+	
+	
+	pop_sqstack(&sstack,&ret);
+	printf("the stacak deepth ：%d\n",deepth_sqstack(&sstack));
+	printf("the pop data is %d\n",ret);
+	get_topElement_sqstack(&sstack,&ret);
+	printf("the top data is %d\n",ret);
+	
 
 	return 0;
 }
