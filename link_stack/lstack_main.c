@@ -3,8 +3,10 @@
 int main()
 {
 	int ret;
+	char *p;
 	plink_stack lstack;
-	
+		
+	printf("%d %d the node size : %d bytes\n",sizeof(lstack),sizeof(p),sizeof(lstack_node));
 	ret = init_lstack(&lstack);
 	
 	if(ret < 1)
@@ -23,6 +25,8 @@ int main()
 	get_topElement_lstack(lstack,&ret);
 	printf("the top data is %d\n",ret);
 	
+	printf("%p %p %p %p\n",lstack->top,lstack->top->next,&(lstack->top->dt),lstack->top->next->next);
+	
 	for(ret = 100;ret < 120;ret++)
 	{
 		push_lstack(lstack,ret);
@@ -30,7 +34,7 @@ int main()
 	
 	print_lstack(lstack);
 	printf("the stack deepth ：%d\n",deepth_lstack(lstack));
-	get_topElement_lstack(lstack,ret);
+	get_topElement_lstack(lstack,&ret);
 	printf("the top data is %d\n",ret);
 	
 	
@@ -40,6 +44,9 @@ int main()
 	get_topElement_lstack(lstack,&ret);
 	printf("the top data is %d\n",ret);
 	
-
+	print_lstack(lstack);
+	destroy_lstack(&lstack);
+	print_lstack(lstack);
+	
 	return 0;
 }

@@ -4,9 +4,10 @@ int init_lstack(plink_stack * lstack)
 {
 	if (lstack == NULL)
 		return E_ARG_NULL;
-	*lstack = (plink_stack)malloc(1*sizeof(link_stack));
+	*lstack = (plink_stack)malloc(1 * sizeof(link_stack));
 	if (*lstack == NULL)
 		return E_MALLOC;
+	printf("stack addr: %p\n",*lstack);
 	(*lstack)->top = NULL;
 	(*lstack)->stack_size = 0;
 }
@@ -18,11 +19,14 @@ int destroy_lstack(link_stack ** lstack)
 	 lstack_node * tmpptr = (*lstack)->top;
 	while(tmpptr != NULL)
 	{
-		tmpptr = (*lstack)->top->next;	
+		tmpptr = (*lstack)->top->next;
+		printf("free node addr: %p\n",(*lstack)->top);		
 		free((*lstack)->top);
+		(*lstack)->top = tmpptr;
 	}
 	
-	free(* lstack);
+	printf("free stack addr: %p\n",*lstack);	
+	free(*lstack);
 	*lstack = NULL;
 	return TRUE;
 	
@@ -92,13 +96,21 @@ int get_topElement_lstack(link_stack *lstack,element_type *pd)
 void print_lstack(link_stack *lstack)
 {
 	if (lstack == NULL || lstack->top == NULL)
+	{
+		printf("stack does not exist\n");
 		return;
-	int i;
+	}
+	int i = 0;
 	lstack_node *ptr = lstack->top;
 	while(ptr != NULL)
 	{
-		printf("%d_",ptr->dt);
+		printf("%p:%d_",ptr,ptr->dt);
 		ptr = ptr->next;
+		i++;
+		if(i % 5 == 0)
+		{
+			printf("\n");
+		}
 	}
 	printf("\n");
 }
