@@ -2,7 +2,7 @@
 
 /*
 顺序循环队列非常好地解决了假溢出，但在顺序循环队列中当条件：
-rear == front
+	rear == front
 成立时，队列可能为空，也可能为满，即满队列和空队列无法区分。解决方法主要有以下几种：
        ①少用一个存储单元
        ②设置一个标志位 
@@ -19,8 +19,7 @@ int init_sqcycle_queue(sequence_cycle_queue * sqcycle_queue)
 	}
 	else
 	{
-		sqcycle_queue->front = 0;
-		sqcycle_queue->rear = 0;
+		sqcycle_queue->front = sqcycle_queue->rear = 0;
 		return TRUE;
 	} 
 }
@@ -42,23 +41,17 @@ int is_empty_sqcycle_queue(sequence_cycle_queue * sqcycle_queue)
 		return TRUE;
 	}
 	
-	if(sqcycle_queue->front == sqcycle_queue->rear)
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
+	return (sqcycle_queue->front == sqcycle_queue->rear ?  TRUE : FALSE);
 }
 
 int is_full_sqcycle_queue(sequence_cycle_queue *sqcycle_queue)
 {
 	if(sqcycle_queue == NULL || sqcycle_queue->pdt == NULL)
 		return FALSE;
-	return ((sqcycle_queue->rear+1)%QUEUE_BASE_SIZE == sqcycle_queue->front? TRUE : FALSE);
+	return ((sqcycle_queue->rear+1)%QUEUE_BASE_SIZE == sqcycle_queue->front ? TRUE : FALSE);
 }
 
+//enqueue
 int en_sqcycle_queue(sequence_cycle_queue *sqcycle_queue,element_type dt)
 {
 	if (sqcycle_queue == NULL || sqcycle_queue->pdt == NULL)
@@ -74,11 +67,12 @@ int en_sqcycle_queue(sequence_cycle_queue *sqcycle_queue,element_type dt)
 	return TRUE;
 }
 
-
+//dequeue
 int de_sqcycle_queue(sequence_cycle_queue *sqcycle_queue,element_type *pd)
 {
 	if (sqcycle_queue == NULL || sqcycle_queue->pdt == NULL || pd == NULL)
 		return E_ARG_NULL;
+	
 	if (is_empty_sqcycle_queue(sqcycle_queue))
 	{
 		return FALSE;

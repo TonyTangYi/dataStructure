@@ -9,7 +9,7 @@ sq_cycle_queue: $(OBJ)
 sqstack_main.o: $(SOURCE) $(HEAD)
 	$(COMPLIE) -c $(SOURCE) $(HEAD)
 
-sequence_stack.o: sequence_cycle_queue.c sequence_cycle_queue.h
+sequence_cycle_queue.o: sequence_cycle_queue.c sequence_cycle_queue.h
 	gcc -c sequence_cycle_queue.c sequence_cycle_queue.h
 	
 .PHONY: clean	
