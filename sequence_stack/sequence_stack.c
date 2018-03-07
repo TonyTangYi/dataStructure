@@ -1,41 +1,41 @@
-#include "sequence_list.h"
+#include "sequence_stack.h"
 
-int init_sqlist(sequence_list * sqlist)
+int init_sqstack(psequence_stack  sqstack)
 {
-	if (sqlist == NULL)
+	if (sqstack == NULL)
 		return E_ARG_NULL;
-	sqlist->pdt  = (element_type *) malloc(LIST_BASE_SIZE * sizeof(element_type));
-	if (sqlist->pdt == NULL)
+	*sqstack  = (sequence_stack *) malloc(1 * sizeof(sequence_stack));
+	if (sqstack->pdt == NULL)
 		return E_MALLOC;
 	else
 	{
-		sqlist->len = 0;
-		sqlist->max_size = LIST_BASE_SIZE;
+		sqstack->len = 0;
+		sqstack->max_size = LIST_BASE_SIZE;
 		return TRUE;
 	} 
 }
 
-int destroy_sqlist(sequence_list * sqlist)
+int destroy_sqstack(sequence_stack * sqstack)
 {
-	if (sqlist == NULL || sqlist->pdt == NULL)
+	if (sqstack == NULL || sqstack->pdt == NULL)
 		return E_ARG_NULL;
 	
-	free(sqlist->pdt);
-	sqlist->pdt = NULL;
-	sqlist->len = 0;
-	sqlist->max_size = LIST_BASE_SIZE;
+	free(sqstack->pdt);
+	sqstack->pdt = NULL;
+	sqstack->len = 0;
+	sqstack->max_size = LIST_BASE_SIZE;
 	return TRUE;
 	
 }
 
-int is_empty_sqlist(sequence_list * sqlist)
+int is_empty_sqstack(sequence_stack * sqstack)
 {
-	if (sqlist == NULL || sqlist->pdt == NULL)
+	if (sqstack == NULL || sqstack->pdt == NULL)
 	{
 		return TRUE;
 	}
 	
-	if(sqlist->len == 0)
+	if(sqstack->len == 0)
 	{
 		return TRUE;
 	}
@@ -45,69 +45,69 @@ int is_empty_sqlist(sequence_list * sqlist)
 	}
 }
 
-int is_full_sqlist(sequence_list *sqlist)
+int is_full_sqstack(sequence_stack *sqstack)
 {
-	if(sqlist == NULL || sqlist->pdt == NULL)
+	if(sqstack == NULL || sqstack->pdt == NULL)
 		return FALSE;
-	if(sqlist->len == sqlist->max_size)
+	if(sqstack->len == sqstack->max_size)
 		return TRUE;
 	else
 		return FALSE;
 }
 
-int insert_sqlist(sequence_list *sqlist,int position,element_type dt)
+int insert_sqstack(sequence_stack *sqstack,int position,element_type dt)
 {
-	if (sqlist == NULL || sqlist->pdt == NULL)
+	if (sqstack == NULL || sqstack->pdt == NULL)
 		return E_ARG_NULL;
-	if (position < 1 || position > sqlist->len + 1)
+	if (position < 1 || position > sqstack->len + 1)
 		return E_OUT_OF_RANGE;
-	puts("insert_sqlist");
-	if (is_full_sqlist(sqlist))
+	puts("insert_sqstack");
+	if (is_full_sqstack(sqstack))
 	{
 		element_type *ptmp;
-		ptmp = (element_type *)realloc(sqlist,(sqlist->max_size + LIST_EXTEND_SIZE) * sizeof(element_type));
+		ptmp = (element_type *)realloc(sqstack,(sqstack->max_size + LIST_EXTEND_SIZE) * sizeof(element_type));
 		if (ptmp == NULL)
 			return E_MALLOC;
-		sqlist->pdt = ptmp;
-		sqlist->max_size += LIST_EXTEND_SIZE;
+		sqstack->pdt = ptmp;
+		sqstack->max_size += LIST_EXTEND_SIZE;
 	}
 	
 	int i;
-	for (i = sqlist->len;i > position - 1;i--)
+	for (i = sqstack->len;i > position - 1;i--)
 	{
-		sqlist->pdt[i] = sqlist->pdt[i-1];
+		sqstack->pdt[i] = sqstack->pdt[i-1];
 	}
 	
-	sqlist->pdt[position-1] = dt;
-	sqlist->len++;
+	sqstack->pdt[position-1] = dt;
+	sqstack->len++;
 	return TRUE;
 }
 
 //delete element according to the position,output the delete element value
-int delete_sqlist(sequence_list *sqlist,int position,element_type *pd)
+int delete_sqstack(sequence_stack *sqstack,int position,element_type *pd)
 {
-	if (sqlist == NULL || sqlist->pdt == NULL || pd == NULL)
+	if (sqstack == NULL || sqstack->pdt == NULL || pd == NULL)
 		return E_ARG_NULL;
-	if (position < 1 || position > sqlist->len)
+	if (position < 1 || position > sqstack->len)
 		return E_OUT_OF_RANGE;
 	int i;
-	*pd = sqlist->pdt[position-1];
-	for(i = position;i < sqlist->len;i++)
+	*pd = sqstack->pdt[position-1];
+	for(i = position;i < sqstack->len;i++)
 	{
-		sqlist->pdt[i-1] = sqlist->pdt[i];
+		sqstack->pdt[i-1] = sqstack->pdt[i];
 	}
-	sqlist->len--;
+	sqstack->len--;
 	return TRUE;
 }
 
-void print_sqlist(sequence_list *sqlist)
+void print_sqstack(sequence_stack *sqstack)
 {
-	if (sqlist == NULL || sqlist->pdt == NULL)
+	if (sqstack == NULL || sqstack->pdt == NULL)
 		return;
 	int i;
-	for (i = 0;i < sqlist->len;i++)
+	for (i = 0;i < sqstack->len;i++)
 	{
-		printf("%d_",sqlist->pdt[i]);
+		printf("%d_",sqstack->pdt[i]);
 	}
 	printf("\n");
 }

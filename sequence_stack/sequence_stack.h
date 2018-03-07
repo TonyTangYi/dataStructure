@@ -32,15 +32,12 @@ typedef struct {
 //static  allocation
 typedef struct {
 	element_type pdt[LIST_BASE_SIZE];
-	int len;
+	int top;
 }sequence_stack,* psequence_stack;
 
 #endif
 
 
 
-int init_sqlist(sequence_list * sqlist);
-int is_empty_sqlist(sequence_list * sqlist);
-int is_full_sqlist(sequence_list *sqlist);
 
 #endif
