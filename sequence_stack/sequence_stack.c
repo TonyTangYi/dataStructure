@@ -4,13 +4,13 @@ int init_sqstack(psequence_stack  sqstack)
 {
 	if (sqstack == NULL)
 		return E_ARG_NULL;
-	*sqstack  = (sequence_stack *) malloc(1 * sizeof(sequence_stack));
+	sqstack->pdt  = (element_type *) malloc(STACK_BASE_SIZE * sizeof(element_type));
 	if (sqstack->pdt == NULL)
 		return E_MALLOC;
 	else
 	{
-		sqstack->len = 0;
-		sqstack->max_size = LIST_BASE_SIZE;
+		sqstack->stack_max_size = STACK_BASE_SIZE;
+		sqstack->top = EMPTY_TOP_SIZE;
 		return TRUE;
 	} 
 }
@@ -22,8 +22,6 @@ int destroy_sqstack(sequence_stack * sqstack)
 	
 	free(sqstack->pdt);
 	sqstack->pdt = NULL;
-	sqstack->len = 0;
-	sqstack->max_size = LIST_BASE_SIZE;
 	return TRUE;
 	
 }
@@ -35,7 +33,7 @@ int is_empty_sqstack(sequence_stack * sqstack)
 		return TRUE;
 	}
 	
-	if(sqstack->len == 0)
+	if(sqstack->top == EMPTY_TOP_SIZE)
 	{
 		return TRUE;
 	}
@@ -49,63 +47,70 @@ int is_full_sqstack(sequence_stack *sqstack)
 {
 	if(sqstack == NULL || sqstack->pdt == NULL)
 		return FALSE;
-	if(sqstack->len == sqstack->max_size)
+	if(sqstack->top >= sqstack->stack_max_size - 1)
 		return TRUE;
 	else
 		return FALSE;
 }
 
-int insert_sqstack(sequence_stack *sqstack,int position,element_type dt)
+
+u32 deepth_sqstack(sequence_stack *sqstack)
+{
+	if(sqstack == NULL || sqstack->pdt == NULL)
+		return FALSE;
+	return sqstack->top + 1;
+}
+
+int push_sqstack(sequence_stack *sqstack,element_type dt)
 {
 	if (sqstack == NULL || sqstack->pdt == NULL)
 		return E_ARG_NULL;
-	if (position < 1 || position > sqstack->len + 1)
-		return E_OUT_OF_RANGE;
-	puts("insert_sqstack");
+
 	if (is_full_sqstack(sqstack))
 	{
 		element_type *ptmp;
-		ptmp = (element_type *)realloc(sqstack,(sqstack->max_size + LIST_EXTEND_SIZE) * sizeof(element_type));
+		ptmp = (element_type *)realloc(sqstack,(sqstack->stack_max_size + STACK_EXTEND_SIZE) * sizeof(element_type));
 		if (ptmp == NULL)
 			return E_MALLOC;
 		sqstack->pdt = ptmp;
-		sqstack->max_size += LIST_EXTEND_SIZE;
+		sqstack->stack_max_size += STACK_EXTEND_SIZE;
 	}
 	
-	int i;
-	for (i = sqstack->len;i > position - 1;i--)
-	{
-		sqstack->pdt[i] = sqstack->pdt[i-1];
-	}
-	
-	sqstack->pdt[position-1] = dt;
-	sqstack->len++;
+	sqstack->pdt[++sqstack->top] = dt;
 	return TRUE;
 }
 
-//delete element according to the position,output the delete element value
-int delete_sqstack(sequence_stack *sqstack,int position,element_type *pd)
+int pop_sqstack(sequence_stack *sqstack,element_type *pd)
 {
 	if (sqstack == NULL || sqstack->pdt == NULL || pd == NULL)
 		return E_ARG_NULL;
-	if (position < 1 || position > sqstack->len)
+	if (is_empty_sqstack(sqstack))
 		return E_OUT_OF_RANGE;
-	int i;
-	*pd = sqstack->pdt[position-1];
-	for(i = position;i < sqstack->len;i++)
-	{
-		sqstack->pdt[i-1] = sqstack->pdt[i];
-	}
-	sqstack->len--;
+
+	*pd = sqstack->pdt[sqstack->top--];
 	return TRUE;
 }
+
+
+int get_topElement_sqstack(sequence_stack *sqstack,element_type *pd)
+{
+	if (sqstack == NULL || sqstack->pdt == NULL || pd == NULL)
+		return E_ARG_NULL;
+	if (is_empty_sqstack(sqstack))
+		return E_OUT_OF_RANGE;
+	
+	*pd = sqstack->pdt[sqstack->top];
+	return TRUE;
+}
+
+
 
 void print_sqstack(sequence_stack *sqstack)
 {
 	if (sqstack == NULL || sqstack->pdt == NULL)
 		return;
 	int i;
-	for (i = 0;i < sqstack->len;i++)
+	for (i = 0;i <= sqstack->top;i++)
 	{
 		printf("%d_",sqstack->pdt[i]);
 	}

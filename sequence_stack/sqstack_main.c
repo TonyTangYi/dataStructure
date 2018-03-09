@@ -1,50 +1,36 @@
-#include "sequence_list.h"
+#include "sequence_stack.h"
 
 int main()
 {
 	int ret;
-	sequence_list slist;
+	sequence_stack sstack;
 	
-	ret = init_sqlist(&slist);
+	ret = init_sqstack(&sstack);
 	
 	if(ret < 1)
-		printf("init sequence list fail\n");
+		printf("init sequence stack fail\n");
 	else
-		printf("init sequence list succeess\n");	
+		printf("init sequence list stack\n");	
 	
-	if(is_empty_sqlist(&slist))
-		printf("sqlist is empty\n");
-	if(is_full_sqlist(&slist))
-		printf("sqlist is not full\n");
+	if(is_empty_sqstack(&sstack))
+		printf("sqstack is empty\n");
+	if(is_full_sqstack(&sstack))
+		printf("sqstack is not full\n");
 	
 	
 	for(ret = 1;ret < 20;ret++)
 	{
-		insert_sqlist(&slist,1,ret);
+		push_sqstack(&sstack,ret);
 	}
-	print_sqlist(&slist);
+	print_sqstack(&sstack);
 	
 	for(ret = 100;ret < 120;ret++)
 	{
-		insert_sqlist(&slist,ret-80,ret);
+		push_sqstack(&sstack,ret);
 	}
 	
-	print_sqlist(&slist);
-	insert_sqlist(&slist,5,1001);
-	print_sqlist(&slist);
-	
-	delete_sqlist(&slist,6,&ret);
-	print_sqlist(&slist);
-	
-	delete_sqlist(&slist,1,&ret);
-	print_sqlist(&slist);
-	
-	while(slist.len)
-	{
-		delete_sqlist(&slist,slist.len,&ret);
-		print_sqlist(&slist);
-	}
-	delete_sqlist(&slist,slist.len,&ret);
-	print_sqlist(&slist);
+	print_sqstack(&sstack);
+
+
 	return 0;
 }
